@@ -159,8 +159,6 @@ void LogTask(void *pvParameters) {
 			if(!fileOpened) {
 				fr = f_open(&logFile, "log.txt", FA_WRITE | FA_OPEN_APPEND);
 				if (fr != FR_OK){
-					f_write(&logFile, logMsg.message, strlen(logMsg.message), &bw);
-					f_sync(&logFile);
 					myprintf("LogTask: Failed to open log.txt, error = %d\r\n", fr);
 					xSemaphoreGive(fatfsMutex);
 					continue;
@@ -168,8 +166,9 @@ void LogTask(void *pvParameters) {
 				fileOpened = true;
 			}
 
-			fr = f_open(&logFile, "log.txt", FA_WRITE);
+			fr = f_write(&logFile, logMsg.message, strlen(logMsg.message), 8ddddddddd&bw);
 			if (fr == FR_OK){
+
 				f_sync(&logFile);
 				myprintf("LogTask: Wrote log entry.\r\n");
 
